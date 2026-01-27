@@ -54,16 +54,11 @@ Think of this as a short “implementation proposal” you’d write at a compan
 
 ### 2.2 Acceptance criteria (your checklist)
 List 5–10 measurable checks that mean you’re done (examples below).
--[]UDP client Built
--[]Server Built
--[]File transfer
--[]File matches
--[]Demo Working
-- [ ] Sender/receiver run with standard CLI flags
-- [ ] All required scenarios demonstrated in the video
-- [ ] Output file matches input file (byte-for-byte)
-- [ ] Figures/plots generated and saved under `results/`
-- [ ] Re-run is reproducible using the same seed
+- [ ] UDP client Built
+- [ ] Server Built
+- [ ] File transfer
+- [ ] File matches
+- [ ] Demo Working
 
 ### 2.3 Work breakdown (high-level; Person X will work on A, Person Y will work on B...)
 - Workstream A:Create UDP and Server [all Andrew]

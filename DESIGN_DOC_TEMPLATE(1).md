@@ -4,17 +4,16 @@
 > Keep it clear, concrete, and lightweight.
 
 **Team Name:**  
-**Members:** (Name, email)  
+**Members:** Andrew Thach
 **GitHub Repo URL (with GitHub usernames):**  
 **Phase:** (1 / 2 / 3 / 4 / 5)  
-**Submission Date:**  
+**Submission Date:**  1/27/26
 **Version:** (v1 / resubmission v2 / etc.)
 
 ---
 
 ## 0) Executive summary
-In **5–8 sentences**, describe what you are adding/creating in *this* phase, what “done” means, and how you’ll validate it (demo + tests + figures).
-
+In **5–8 sentences**, For phase 1, we will create a tcp/ip stack with 5 layers. It includes application, transport, network,link, and physical. For phase 1 we will build a UDP client and a server in Python. The client sends a message "hello" and the server will send the same message back to the client. We then will transfer a file over the udp using a rdt 1.0 protocol. The phase will then check the output and see if it's the same message. 
 ---
 
 ## 1) Phase requirements
@@ -30,8 +29,8 @@ Fill in the scenarios required by the phase spec.
 
 | Scenario | What you will inject / configure | Expected observable behavior | What we will see in the video |
 |---|---|---|---|
-| 1 |  |  |  |
-| 2 |  |  |  |
+| 1 |  Hello |Hello is returned  |Prints hello  |
+| 2 |sends a file | Server gets file| File saves output |
 | 3 |  |  |  |
 
 ### 1.3 Required figures / plots
@@ -47,14 +46,19 @@ Fill in the figures/plots required by the phase spec (if none, write “N/A”).
 ## 2) Phase plan (company-style, lightweight)
 Think of this as a short “implementation proposal” you’d write at a company.
 
+
 ### 2.1 Scope: what changes/additions this phase
-- **New behaviors added:**
+- **New behaviors added:UDP echo server, file transfer with RDT 1.0 **
 - **Behaviors unchanged from previous phase:**
 - **Out of scope (explicitly):**
 
 ### 2.2 Acceptance criteria (your checklist)
 List 5–10 measurable checks that mean you’re done (examples below).
-
+-[]UDP client Built
+-[]Server Built
+-[]File transfer
+-[]File matches
+-[]Demo Working
 - [ ] Sender/receiver run with standard CLI flags
 - [ ] All required scenarios demonstrated in the video
 - [ ] Output file matches input file (byte-for-byte)
@@ -62,9 +66,9 @@ List 5–10 measurable checks that mean you’re done (examples below).
 - [ ] Re-run is reproducible using the same seed
 
 ### 2.3 Work breakdown (high-level; Person X will work on A, Person Y will work on B...)
-- Workstream A:
-- Workstream B:
-- Workstream C:
+- Workstream A:Create UDP and Server [all Andrew]
+- Workstream B:File transfer 
+- Workstream C: Testing
 
 ---
 
@@ -86,9 +90,9 @@ For each phase:
 
 ### 3.2 Component responsibilities
 - **Sender**
-  - responsibilities:
+  - responsibilities: Client, send packets to receiver, wait for file
 - **Receiver**
-  - responsibilities:
+  - responsibilities: Echo message, Write file data
 - **Shared modules/utilities**
   - packet encode/decode:
   - checksum:
@@ -122,10 +126,10 @@ This ensures everyone can encode/decode packets consistently.
 
 | Field | Size (bytes/bits) | Type | Description | Notes |
 |---|---:|---|---|---|
-| type |  |  | data vs ack |  |
-| seq |  |  | sequence number |  |
+| type |1 byte  |int  | packet |  |
+| seq | 4 bytes |int  | sequence number |  |
 | ack |  |  | ack number / flag |  |
-| len |  |  | payload length | last packet may be smaller |
+| len | 2 bytes |int  | payload length | last packet may be smaller |
 | checksum |  |  | checksum value | what it covers (header/payload) |
 | payload | ≤ ~1024B | bytes | file chunk | binary-safe |
 
@@ -173,12 +177,11 @@ scripts -> sender/receiver CLI, results CSV, plotting
 This section is your “engineering spec” that you implement against. Keep it precise but not code-heavy.
 
 ### 6.1 Sender behavior
-Describe behavior as steps or a state machine:
-- when packets are sent
-- when ACKs are processed
-- retransmission rules
-- termination conditions
-- (if applicable) window advance rules
+Reads message
+Fixed files
+Assign sequence numbers
+Wait for Ack, match sequence number
+Send next packet
 
 **Sender pseudocode (recommended):**
 ```text
@@ -194,11 +197,13 @@ while not done:
 ```
 
 ### 6.2 Receiver behavior
-Describe receiver rules:
-- accept/discard conditions
-- ACK rules
-- duplicate/out-of-order handling
-- file write rules (safe and deterministic)
+Find udp port
+receive packets
+check sequence number
+write output file
+Return ACK
+Finish
+reset
 
 **Receiver pseudocode (recommended):**
 ```text
@@ -294,10 +299,9 @@ State where phase artifacts live:
 | README + reproducibility |  |  |  |
 
 ### 10.2 Milestones (keep it realistic)
-- Milestone 1:
-- Milestone 2:
-- Milestone 3:
-
+- Milestone 1: Design Doc
+- Milestone 2: Working Prototype
+- Milestone 3: Demo
 ---
 
 ## Appendix (optional)
